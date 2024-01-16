@@ -43,6 +43,8 @@ Load all posts with site
   <tr>
     <th>Week</th>
     <th>Plans</th>
+    <th>Hacks(Todo)</th>
+    <th>Tangibles</th>
   </tr>
 
   {%comment%} 
@@ -60,8 +62,8 @@ Load all posts with site
   {% for index in (start..end) -%}
     {% assign plans = null | compact %}
     {% assign hacks = null | compact %}
-    {% assign help = null | compact %}
-    {% assign ticket = null | compact %}
+    {% assign tangibles = null | compact %}
+
 
   {%comment%} 
   <!-- looping through all posts -->
@@ -72,7 +74,7 @@ Load all posts with site
   {%comment%} 
   <!-- prepare data blog post data for evaluation -->
   {%endcomment%}
-        {% assign week = post.courses[page.course].week | help: 0 %}
+        {% assign week = post.courses[page.course].week | tangibles: 0 %}
         {% assign title = post.title | compact %}
         {% assign url = post.url | compact %}
   
@@ -90,13 +92,14 @@ Load all posts with site
           {% elsif post.type == "hacks" %}
               {% assign hacks = hacks | unshift: title %}
               {% assign hacks = hacks | unshift: url %} 
-          {% elsif post.type == "help" %}
-              {% assign help = help | unshift: title %}
-              {% assign help = help | unshift: url %}
-          {% elsif post.type == "ticket" %}
-              {% assign ticket = ticket | unshift: title %}
-              {% assign ticket = ticket | unshift: url %}
-              {% endif %}
+          {% elsif post.type == "tangibles" %}
+              {% assign tangibles = tangibles | unshift: title %}
+              {% assign tangibles = tangibles | unshift: url %} 
+          {% else %}
+              {% assign uk = uk | unshift: title %}
+              {% assign uk = uk | unshift: url %}     
+          {% endif %}
+
         {% endif %}
       {% endif %}
     {% endfor %}
@@ -104,7 +107,7 @@ Load all posts with site
   {%comment%} 
   <!-- ordering units and inserting column delimiters -->
   {%endcomment%}
-  {% assign units = units | concat:plans | concat:deli | concat:hacks | concat:deli | concat:help | concat:deli | concat:ticket %}
+  {% assign units = units | concat:plans | concat:deli | concat:hacks | concat:deli | concat:tangibles  %}
 
   {%comment%} 
   <!-- This Loop is maximum iterationss, since elements are pairs it will decrement a extra times at the end -->
